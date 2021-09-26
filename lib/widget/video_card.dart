@@ -9,7 +9,6 @@ class VideoCard extends StatelessWidget {
   final VideoModel videoModel;
 
   const VideoCard({Key key, this.videoModel}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
