@@ -6,6 +6,7 @@ import 'package:bilibili/navigator/hi_navigator.dart';
 import 'package:bilibili/page/home_tab_page.dart';
 import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/toast.dart';
+import 'package:bilibili/widget/loading_container.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int> onJumpTo;
+
   const HomePage({Key key, this.onJumpTo}) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class _HomePageState extends HiState<HomePage>
   List<CategoryModel> categoryList = [];
   List<BannerModel> bannerList = [];
   TabController _tabController;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -55,8 +58,11 @@ class _HomePageState extends HiState<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      // appBar: AppBar(),
-      body: Container(
+        // appBar: AppBar(),
+        body: LoadingContainer(
+      cover: true,
+      isLoading: _isLoading,
+      child: Container(
         child: Column(
           children: [
             NavigationBar(
@@ -67,7 +73,6 @@ class _HomePageState extends HiState<HomePage>
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.only(top: 30),
               child: _tabBar(),
             ),
             Flexible(
@@ -82,7 +87,7 @@ class _HomePageState extends HiState<HomePage>
           ],
         ),
       ),
-    );
+    ));
   }
 
   @override
@@ -121,11 +126,18 @@ class _HomePageState extends HiState<HomePage>
       setState(() {
         categoryList = result.categoryList;
         bannerList = result.bannerList;
+        _isLoading = false;
       });
     } on NeedAuth catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       print(e);
       showWarnToast(e.message);
     } on HiNetError catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       showWarnToast(e.message);
     }
   }
@@ -137,9 +149,9 @@ class _HomePageState extends HiState<HomePage>
           children: [
             InkWell(
               onTap: () {
-               if(widget.onJumpTo != null){
-                 widget.onJumpTo(3);
-               }
+                if (widget.onJumpTo != null) {
+                  widget.onJumpTo(3);
+                }
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(23),
@@ -159,13 +171,19 @@ class _HomePageState extends HiState<HomePage>
                   padding: EdgeInsets.only(left: 10),
                   height: 32,
                   alignment: Alignment.centerLeft,
-                  child:  Icon(Icons.search, color: Colors.grey,),
-                      decoration: BoxDecoration(color: Colors.grey[100]),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  decoration: BoxDecoration(color: Colors.grey[100]),
                 ),
               ),
             )),
-            Icon(Icons.explore_outlined,color:Colors.grey),
-            Padding(padding: EdgeInsets.only(left: 12),child: Icon(Icons.mail_outline,color:Colors.grey),)
+            Icon(Icons.explore_outlined, color: Colors.grey),
+            Padding(
+              padding: EdgeInsets.only(left: 12),
+              child: Icon(Icons.mail_outline, color: Colors.grey),
+            )
           ],
         ));
   }
