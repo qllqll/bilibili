@@ -4,8 +4,11 @@ import 'package:bilibili/http/dao/home_dao.dart';
 import 'package:bilibili/model/home_model.dart';
 import 'package:bilibili/navigator/hi_navigator.dart';
 import 'package:bilibili/page/home_tab_page.dart';
+import 'package:bilibili/page/profile_page.dart';
+import 'package:bilibili/page/video_detail_page.dart';
 import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/toast.dart';
+import 'package:bilibili/util/view_util.dart';
 import 'package:bilibili/widget/loading_container.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,21 +23,26 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
+//AutomaticKeepAliveClientMixin 保持页面状态，避免重复请求
+//TickerProviderStateMixin tabbar 动画
+//WidgetsBindingObserver APP生命周期
 class _HomePageState extends HiState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin,WidgetsBindingObserver{
   var listener;
   List<CategoryModel> categoryList = [];
   List<BannerModel> bannerList = [];
   TabController _tabController;
   bool _isLoading = true;
-
+  Widget _currentPage;
   @override
   void initState() {
     // TODO: implement initState
-    _tabController = TabController(length: categoryList.length, vsync: this);
     super.initState();
+    //注册生命周期
+    WidgetsBinding.instance.addObserver(this);
+    _tabController = TabController(length: categoryList.length, vsync: this);
     HiNavigator.getInstance().addListeners(this.listener = (current, pre) {
+      this._currentPage = current.page;
       print('current:${current.page}');
       print('current:${pre.page}');
       if (widget == current.page || current.page is HomePage) {
@@ -42,13 +50,44 @@ class _HomePageState extends HiState<HomePage>
       } else if (widget == pre.page || pre?.page is HomePage) {
         print('打开了首页：onPause');
       }
+    //  当页面返回到首页恢复首页的状态栏样式
+      if(pre?.page is VideoDetailPage && !(current.page is ProfilePage)){
+        changeStatusBar(color:Colors.white, statusStyle:StatusStyle.DARK_CONTENT);
+      }
     });
     loadDate();
+  }
+
+  //监听应用生命周期变化
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    print("-----didChangeAppLifecycleState：$state");
+    switch(state){
+      //处于这种状态的应用程序应该假设他们可能在任何时候暂停。
+      case AppLifecycleState.inactive:
+        break;
+      //从后台到前台，界面可见
+      case AppLifecycleState.resumed:
+        //fix Android 压后台，状态栏字体颜色变白的问题
+      if(!(_currentPage is VideoDetailPage)){
+        changeStatusBar(color:Colors.white, statusStyle:StatusStyle.DARK_CONTENT);
+      }
+        break;
+    //从后台到前台，界面可见
+      case AppLifecycleState.paused:
+        break;
+    //App结束调用，APP被销毁
+      case AppLifecycleState.detached:
+        break;
+    }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    WidgetsBinding.instance.removeObserver(this);
     HiNavigator.getInstance().removeListeners(this.listener);
     _tabController.dispose();
     super.dispose();

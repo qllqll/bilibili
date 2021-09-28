@@ -26,11 +26,11 @@ class MaterialControls extends StatefulWidget {
 
   const MaterialControls(
       {Key key,
-        this.showLoadingOnInitialize = true,
-        this.showBigPlayIcon = true,
-        this.overlayUI,
-        this.bottomGradient,
-        this.barrageUI})
+      this.showLoadingOnInitialize = true,
+      this.showBigPlayIcon = true,
+      this.overlayUI,
+      this.bottomGradient,
+      this.barrageUI})
       : super(key: key);
 
   @override
@@ -62,16 +62,16 @@ class _MaterialControlsState extends State<MaterialControls>
     if (_latestValue.hasError) {
       return chewieController.errorBuilder != null
           ? chewieController.errorBuilder(
-        context,
-        chewieController.videoPlayerController.value.errorDescription,
-      )
+              context,
+              chewieController.videoPlayerController.value.errorDescription,
+            )
           : const Center(
-        child: Icon(
-          Icons.error,
-          color: Colors.white,
-          size: 42,
-        ),
-      );
+              child: Icon(
+                Icons.error,
+                color: Colors.white,
+                size: 42,
+              ),
+            );
     }
 
     return MouseRegion(
@@ -88,8 +88,8 @@ class _MaterialControlsState extends State<MaterialControls>
               Column(
                 children: <Widget>[
                   if (_latestValue != null &&
-                      !_latestValue.isPlaying &&
-                      _latestValue.duration == null ||
+                          !_latestValue.isPlaying &&
+                          _latestValue.duration == null ||
                       _latestValue.isBuffering)
                     Expanded(
                       child: Center(
@@ -144,8 +144,8 @@ class _MaterialControlsState extends State<MaterialControls>
 
   ///底部控制栏
   AnimatedOpacity _buildBottomBar(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     final iconColor = Theme.of(context).textTheme.button.color;
 
     return AnimatedOpacity(
@@ -154,7 +154,7 @@ class _MaterialControlsState extends State<MaterialControls>
       child: Container(
         height: barHeight,
         decoration: BoxDecoration(
-          //渐变
+            //渐变
             gradient: widget.bottomGradient),
         child: Row(
           children: <Widget>[
@@ -231,36 +231,36 @@ class _MaterialControlsState extends State<MaterialControls>
           child: Center(
             child: AnimatedOpacity(
               opacity:
-              _latestValue != null && !_latestValue.isPlaying && !_dragging
-                  ? 1.0
-                  : 0.0,
+                  _latestValue != null && !_latestValue.isPlaying && !_dragging
+                      ? 1.0
+                      : 0.0,
 
               ///中间播放按钮
               duration: const Duration(milliseconds: 300),
               child: widget.showBigPlayIcon
                   ? GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dialogBackgroundColor,
-                    borderRadius: BorderRadius.circular(48.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: IconButton(
-                        icon: isFinished
-                            ? const Icon(Icons.replay, size: 32.0)
-                            : AnimatedIcon(
-                          icon: AnimatedIcons.play_pause,
-                          progress:
-                          playPauseIconAnimationController,
-                          size: 32.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).dialogBackgroundColor,
+                          borderRadius: BorderRadius.circular(48.0),
                         ),
-                        onPressed: () {
-                          _playPause();
-                        }),
-                  ),
-                ),
-              )
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: IconButton(
+                              icon: isFinished
+                                  ? const Icon(Icons.replay, size: 32.0)
+                                  : AnimatedIcon(
+                                      icon: AnimatedIcons.play_pause,
+                                      progress:
+                                          playPauseIconAnimationController,
+                                      size: 32.0,
+                                    ),
+                              onPressed: () {
+                                _playPause();
+                              }),
+                        ),
+                      ),
+                    )
                   : Container(),
             ),
           ),
@@ -270,8 +270,8 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   Widget _buildSpeedButton(
-      VideoPlayerController controller,
-      ) {
+    VideoPlayerController controller,
+  ) {
     return GestureDetector(
       onTap: () async {
         _hideTimer?.cancel();
@@ -312,8 +312,8 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   GestureDetector _buildMuteButton(
-      VideoPlayerController controller,
-      ) {
+    VideoPlayerController controller,
+  ) {
     return GestureDetector(
       onTap: () {
         _cancelAndRestartTimer();
@@ -416,6 +416,10 @@ class _MaterialControlsState extends State<MaterialControls>
 
   void _onExpandCollapse() {
     if (chewieController.videoPlayerController.value.size == null) {
+      print('videoPlayerController.value.size is null');
+      return;
+    }
+    if (chewieController.videoPlayerController.value.size == null) {
       print('_onExpandCollapse:videoPlayerController.value.size is null.');
       return;
     }
@@ -425,10 +429,10 @@ class _MaterialControlsState extends State<MaterialControls>
       chewieController.toggleFullScreen();
       _showAfterExpandCollapseTimer =
           Timer(const Duration(milliseconds: 300), () {
-            setState(() {
-              _cancelAndRestartTimer();
-            });
-          });
+        setState(() {
+          _cancelAndRestartTimer();
+        });
+      });
     });
   }
 
@@ -478,11 +482,12 @@ class _MaterialControlsState extends State<MaterialControls>
       _latestValue = controller.value;
     });
   }
+
   ///进度条
   Widget _buildProgressBar() {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(right: 15,left: 15),
+        padding: EdgeInsets.only(right: 15, left: 15),
         child: MaterialVideoProgressBar(
           controller,
           onDragStart: () {
@@ -520,9 +525,9 @@ class _MaterialControlsState extends State<MaterialControls>
   _overlayUI() {
     return widget.overlayUI != null
         ? AnimatedOpacity(
-        opacity: _hideStuff ? 0.0 : 1.0,
-        duration: Duration(milliseconds: 300),
-        child: widget.overlayUI)
+            opacity: _hideStuff ? 0.0 : 1.0,
+            duration: Duration(milliseconds: 300),
+            child: widget.overlayUI)
         : Container();
   }
 }
