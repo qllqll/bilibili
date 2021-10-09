@@ -1,4 +1,5 @@
 import 'package:bilibili/model/home_model.dart';
+import 'package:bilibili/model/video_model.dart';
 import 'package:bilibili/navigator/hi_navigator.dart';
 import 'package:bilibili/util/format_util.dart';
 import 'package:bilibili/util/view_util.dart';

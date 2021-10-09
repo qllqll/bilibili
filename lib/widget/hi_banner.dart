@@ -1,4 +1,5 @@
 import 'package:bilibili/model/home_model.dart';
+import 'package:bilibili/model/video_model.dart';
 import 'package:bilibili/navigator/hi_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';

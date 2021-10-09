@@ -1,6 +1,7 @@
 import 'package:bilibili/http/core/hi_error.dart';
 import 'package:bilibili/http/dao/home_dao.dart';
 import 'package:bilibili/model/home_model.dart';
+import 'package:bilibili/model/video_model.dart';
 import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:bilibili/widget/hi_banner.dart';

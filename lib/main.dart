@@ -10,6 +10,8 @@ import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:flutter/material.dart';
 
+import 'model/video_model.dart';
+
 void main() {
   runApp(BiliApp());
 }
