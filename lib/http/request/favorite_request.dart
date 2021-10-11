@@ -1,19 +1,22 @@
 import 'package:bilibili/http/request/base_request.dart';
 
-class HomeRequest extends BaseRequest{
+class FavoriteRequest extends BaseRequest{
   @override
   HttpMethod httpMethod() {
-   return HttpMethod.GET;
+    // TODO: implement httpMethod
+   return HttpMethod.POST;
   }
 
   @override
   bool needLogin() {
+    // TODO: implement needLogin
     return true;
   }
 
   @override
   String path() {
-    return "uapi/fa/home/";
+    // TODO: implement path
+   return "uapi/fa/favorite";
   }
 
 }

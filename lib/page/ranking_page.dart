@@ -1,3 +1,4 @@
+import 'package:bilibili/util/view_util.dart';
 import 'package:bilibili/widget/hi_tab.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,34 +38,39 @@ class _RankingPageState extends State<RankingPage>
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(),
-      body: Container(
-          child: Column(
-        children: [
-          NavigationBar(
-            height: 50,
-            child: _tabBar(),
-            color: Colors.white,
-            statusStyle: StatusStyle.DARK_CONTENT,
-          )
-        ],
-      )),
-    );
+        body: Column(
+          children: [
+            _buildNavigationBar(), _buildTabView()
+          ],
+        ));
+  }
+
+  NavigationBar _buildNavigationBar() {
+    return NavigationBar(
+        child: Container(
+          alignment: Alignment.center,
+          child: _tabBar(),
+          decoration: bottomBoxShadow(),
+        ));
   }
 
   _tabBar() {
-    return Material(
-      elevation: 5,
-      color:Colors.white,
-      shadowColor: Colors.grey[100],
-      child:Container(alignment: Alignment.center, child: HiTab(
-        TABS.map<Tab>((tab) {
-          return Tab(text: tab['name']);
-        }).toList(),
-        fonsize: 16,
-        borderWidth: 3,
-        unselectedLabelColor: Colors.black54,
-        controller: _tabController,
-      ))
+    return HiTab(
+      TABS.map<Tab>((tab) {
+        return Tab(text: tab['name']);
+      }).toList(),
+      fonsize: 16,
+      borderWidth: 3,
+      unselectedLabelColor: Colors.black54,
+      controller: _tabController,
     );
+  }
+
+  _buildTabView() {
+    return Flexible(child: TabBarView(children: TABS.map((tab) {
+      return Container(
+        child: Text(tab['name']),
+      );
+    }).toList(), controller: _tabController,));
   }
 }
