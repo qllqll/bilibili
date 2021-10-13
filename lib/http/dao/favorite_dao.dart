@@ -9,7 +9,6 @@ class FavoriteDao {
         favorite ? FavoriteRequest() : CancelFavoriteRequest();
     request.pathParams = vid;
     var result = await HiNet.getInstace().fire(request);
-    print(result);
     return result;
   }
 }

@@ -1,3 +1,5 @@
+import 'package:bilibili/http/dao/ranking_dao.dart';
+import 'package:bilibili/page/ranking_tab_page.dart';
 import 'package:bilibili/util/view_util.dart';
 import 'package:bilibili/widget/hi_tab.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
@@ -25,6 +27,7 @@ class _RankingPageState extends State<RankingPage>
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: TABS.length, vsync: this);
+    RankingDao.get("like");
   }
 
   @override
@@ -68,9 +71,7 @@ class _RankingPageState extends State<RankingPage>
 
   _buildTabView() {
     return Flexible(child: TabBarView(children: TABS.map((tab) {
-      return Container(
-        child: Text(tab['name']),
-      );
+      return RankingTabPage(sort: tab['key']);
     }).toList(), controller: _tabController,));
   }
 }

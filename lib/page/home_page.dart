@@ -1,5 +1,5 @@
 import 'package:bilibili/http/core/hi_error.dart';
-import 'package:bilibili/http/core/hi_state.dart';
+import 'package:bilibili/core/hi_state.dart';
 import 'package:bilibili/http/dao/home_dao.dart';
 import 'package:bilibili/model/home_model.dart';
 import 'package:bilibili/navigator/hi_navigator.dart';
