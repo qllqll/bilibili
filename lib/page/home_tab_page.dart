@@ -17,19 +17,17 @@ class HomeTabPage extends StatefulWidget {
   _HomeTabPageState createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends HiBaseTabState<HomeModel,VideoModel,HomeTabPage> {
+class _HomeTabPageState
+    extends HiBaseTabState<HomeModel, VideoModel, HomeTabPage> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
-
-
   _banner() {
-    return Padding(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: HiBanner(widget.bannerList));
+    return HiBanner(widget.bannerList,
+        padding: EdgeInsets.only(left: 5, right: 5));
   }
 
   @override
@@ -45,8 +43,7 @@ class _HomeTabPageState extends HiBaseTabState<HomeModel,VideoModel,HomeTabPage>
       itemCount: dataList.length,
       itemBuilder: (BuildContext context, int index) {
         if (widget.bannerList != null && index == 0) {
-          return Padding(
-              padding: EdgeInsets.only(bottom: 8), child: _banner());
+          return Padding(padding: EdgeInsets.only(bottom: 8), child: _banner());
         } else {
           return VideoCard(videoModel: dataList[index]);
         }
@@ -62,13 +59,14 @@ class _HomeTabPageState extends HiBaseTabState<HomeModel,VideoModel,HomeTabPage>
   @override
   Future<HomeModel> getData(int pageIndex) async {
     // TODO: implement getData
-    HomeModel result = await HomeDao.get(widget.categoryName,pageIndex:pageIndex,pageSize: 10);
+    HomeModel result = await HomeDao.get(widget.categoryName,
+        pageIndex: pageIndex, pageSize: 10);
     return result;
   }
 
   @override
   List<VideoModel> parseList(HomeModel result) {
     // TODO: implement parseList
-   return result.videoList;
+    return result.videoList;
   }
 }
