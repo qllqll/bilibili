@@ -3,6 +3,7 @@ import 'package:bilibili/http/dao/profile_dao.dart';
 import 'package:bilibili/model/profile_model.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:bilibili/util/view_util.dart';
+import 'package:bilibili/widget/benefit_card.dart';
 import 'package:bilibili/widget/course_card.dart';
 import 'package:bilibili/widget/hi_banner.dart';
 import 'package:bilibili/widget/hi_blur.dart';
@@ -108,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage>
     if (_profileModel == null) {
       return [];
     }
-    return [_buildBanner(),CourseCard(courseList: _profileModel.courseList)];
+    return [_buildBanner(),CourseCard(courseList: _profileModel.courseList),BenefitCard(benefitList: _profileModel.benefitList)];
   }
 
   _buildBanner() {

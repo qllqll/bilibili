@@ -2,6 +2,7 @@ import 'package:bilibili/model/profile_model.dart';
 import 'package:bilibili/util/view_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ///职场进阶
 class CourseCard extends StatelessWidget {
@@ -63,8 +64,10 @@ class CourseCard extends StatelessWidget {
 
   _buildCard(Course mo, double width, double height) {
     return InkWell(
-      onTap: (){
-        
+      onTap: () async {
+        await canLaunch(mo.url)
+            ? await launch(mo.url)
+            : throw 'Could not launch ${mo.url}';
       },
       child: Padding(padding: EdgeInsets.only(right: 5,bottom: 7),child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
