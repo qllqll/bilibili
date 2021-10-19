@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:bilibili/barrage/barrage_item.dart';
+import 'package:bilibili/barrage/hi_barrage.dart';
+import 'package:bilibili/barrage/hi_socket.dart';
 import 'package:bilibili/http/core/hi_error.dart';
 import 'package:bilibili/http/dao/favorite_dao.dart';
 import 'package:bilibili/http/dao/video_detail_dao.dart';
@@ -34,11 +37,14 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   List tabs = ["简介", "评论288"];
   VideoDetailModel videoDetailModel;
   VideoModel videoModel;
-List<VideoModel> videoList = [];
+  List<VideoModel> videoList = [];
+  var _barrageKey = GlobalKey<HiBarrageState>();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     //  黑色状态栏  仅Android
     changeStatusBar(
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
@@ -93,6 +99,7 @@ List<VideoModel> videoList = [];
       cover: model.cover,
       overlayUI: videoAppBar(),
       autoPlay: true,
+      barrageUI: HiBarrage(key:_barrageKey ,vid: model.vid,autoPlay: true,)
     );
   }
 
@@ -126,7 +133,7 @@ List<VideoModel> videoList = [];
   _buildDetailList() {
     return ListView(
       padding: EdgeInsets.all(0),
-      children: [...buildContents(),...buildVideoList()],
+      children: [...buildContents(), ...buildVideoList()],
     );
   }
 
@@ -183,7 +190,7 @@ List<VideoModel> videoList = [];
       showToast(result['msg']);
     } on NeedAuth catch (e) {
       showWarnToast(e.message);
-    }on HiNetError catch(e){
+    } on HiNetError catch (e) {
       showWarnToast(e.message);
     }
   }
@@ -191,6 +198,8 @@ List<VideoModel> videoList = [];
   void _doShare() {}
 
   buildVideoList() {
-    return videoList.map((VideoModel mo) => VideoLargeCard(videoModel: mo)).toList();
+    return videoList
+        .map((VideoModel mo) => VideoLargeCard(videoModel: mo))
+        .toList();
   }
 }

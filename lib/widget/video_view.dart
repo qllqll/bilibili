@@ -16,14 +16,14 @@ class VideoView extends StatefulWidget {
   final bool looping;
   final double aspectRatio;
   final Widget overlayUI;
-  
+  final Widget barrageUI;
 
   const VideoView(this.url,
       {Key key,
       this.cover,
       this.autoPlay = false,
       this.looping = false,
-      this.aspectRatio = 16 / 9, this.overlayUI})
+      this.aspectRatio = 16 / 9, this.overlayUI, this.barrageUI})
       : super(key: key);
 
   @override
@@ -67,6 +67,7 @@ class _VideoViewState extends State<VideoView> {
             showLoadingOnInitialize: false,
             showBigPlayIcon: false,
             overlayUI:widget.overlayUI,
+            barrageUI: widget.barrageUI,
             bottomGradient: blackLinearGradient()));
     _chewieController.addListener(_fullScreenListener);
 

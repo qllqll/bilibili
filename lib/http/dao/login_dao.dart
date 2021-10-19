@@ -8,6 +8,7 @@ class LoginDao {
   static const BOARDING_PASS = 'boarding-pass';
   static const USERNAME = 'userName';
   static const PASSWORD = 'password';
+
   static login(String userName, String password) {
     return _send(userName, password);
   }
