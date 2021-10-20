@@ -106,7 +106,6 @@ class HiBarrageState extends State<HiBarrage> implements IBarrage {
           var temp = _barrageModelList.removeAt(0);
           addBarrage(temp);
           print('start: ${temp.content}');
-
         } else {
           //弹幕发送完毕后关闭定时器
           print("弹幕已经发送完毕");
@@ -127,7 +126,6 @@ class HiBarrageState extends State<HiBarrage> implements IBarrage {
     var item = BarrageItem(id: id,top:top,child: BarrageViewUtil.barrageView(model),onComplete:_onComplete ,);
     _barrageItemList.add(item);
     setState(() {
-
     });
   }
 

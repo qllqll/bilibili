@@ -1,3 +1,4 @@
+import 'package:bilibili/barrage/barrage_transition.dart';
 import 'package:flutter/material.dart';
 
 ///弹幕widget
@@ -8,15 +9,20 @@ class BarrageItem extends StatelessWidget {
   final ValueChanged onComplete;
   final Duration duration;
 
-  const BarrageItem(
-      {Key key, this.id, this.top, this.child, this.onComplete, this.duration=const Duration(minutes: 9000)})
+  BarrageItem(
+      {Key key, this.id, this.top, this.child, this.onComplete, this.duration = const Duration(
+          milliseconds: 9000)})
       : super(key: key);
+
+  //fix 动画状态错乱
+  var _key = GlobalKey<BarrageTransitionState>();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: top),
-      child: child,
-    );
+    return Positioned.fill(top: top,
+        child: BarrageTransition(
+            key: _key, child: child, duration: duration, onComplete: (v) {
+          onComplete(id);
+        }));
   }
 }
