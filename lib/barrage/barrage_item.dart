@@ -21,7 +21,7 @@ class BarrageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned.fill(top: top,
         child: BarrageTransition(
-            key: _key, child: child, duration: duration, onComplete: (v) {
+            child: child, duration: duration, onComplete: (v) {
           onComplete(id);
         }));
   }

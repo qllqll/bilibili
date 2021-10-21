@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:bilibili/barrage/barrage_input.dart';
 import 'package:bilibili/barrage/barrage_item.dart';
+import 'package:bilibili/barrage/barrage_switch.dart';
 import 'package:bilibili/barrage/hi_barrage.dart';
 import 'package:bilibili/barrage/hi_socket.dart';
 import 'package:bilibili/http/core/hi_error.dart';
@@ -21,6 +23,7 @@ import 'package:bilibili/widget/video_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_overlay/flutter_overlay.dart';
 
 class VideoDetailPage extends StatefulWidget {
   final VideoModel videoModel;
@@ -39,6 +42,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoModel videoModel;
   List<VideoModel> videoList = [];
   var _barrageKey = GlobalKey<HiBarrageState>();
+  var _inputShowing = false;
 
   @override
   void initState() {
@@ -94,13 +98,15 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   _buildVideoView() {
     var model = videoModel;
     print("model ---- ${model.cover}");
-    return VideoView(
-      model.url,
-      cover: model.cover,
-      overlayUI: videoAppBar(),
-      autoPlay: true,
-      barrageUI: HiBarrage(key:_barrageKey ,vid: model.vid,autoPlay: true,)
-    );
+    return VideoView(model.url,
+        cover: model.cover,
+        overlayUI: videoAppBar(),
+        autoPlay: true,
+        barrageUI: HiBarrage(
+          key: _barrageKey,
+          vid: model.vid,
+          autoPlay: true,
+        ));
   }
 
   _buildTabNavigation() {
@@ -112,14 +118,39 @@ class _VideoDetailPageState extends State<VideoDetailPage>
           height: 39,
           color: Colors.white,
           padding: EdgeInsets.only(left: 20),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            _tabBar(),
-            Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: Icon(Icons.live_tv_rounded, color: Colors.grey))
-          ])),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [_tabBar(), _buildBarrageBtn()])),
     );
+  }
+
+  _buildBarrageBtn() {
+    return BarrageSwitch(
+      inputShowing: _inputShowing,
+      onShowInput:(){
+        setState(() {
+          _inputShowing = true;
+        });
+        HiOverlay.show(context, child: BarrageInput(
+          onTabClose: () {
+            setState(() {
+              _inputShowing = false;
+            });
+          },
+        )).then((value){
+          print('---input:$value');
+          _barrageKey.currentState.send(value);
+        });
+      } ,onBarrageSwitch:(open){
+        if(open){
+          _barrageKey.currentState.play();
+        } else {
+          _barrageKey.currentState.pause();
+
+        }
+    } ,
+    );
+
   }
 
   _tabBar() {
