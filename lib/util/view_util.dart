@@ -1,8 +1,15 @@
+import 'package:bilibili/navigator/hi_navigator.dart';
+import 'package:bilibili/page/profile_page.dart';
+import 'package:bilibili/page/video_detail_page.dart';
+import 'package:bilibili/provider/theme_provider.dart';
 import 'package:bilibili/util/format_util.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
+import 'package:provider/provider.dart';
+
+import 'color.dart';
 
 ///带缓存的image
 Widget cachedImage(String url, {double width, double height}) {
@@ -31,8 +38,21 @@ blackLinearGradient({bool fromTop = false}) {
 }
 
 ///修改状态栏
-void changeStatusBar(
-    {color: Colors.white, StatusStyle statusStyle: StatusStyle.DARK_CONTENT}) {
+void changeStatusBar({color: Colors.white, StatusStyle statusStyle: StatusStyle
+    .DARK_CONTENT, BuildContext context}) {
+  if (context != null) {
+    var themeProvider = context.watch<ThemeProvider>();
+    if (themeProvider.isDark()) {
+      statusStyle = StatusStyle.LIGHT_CONTENT;
+      color = HiColor.dark_bg;
+    }
+    var page = HiNavigator.getInstance().getCurrent()?.page;
+    if(page is ProfilePage) {
+      color = Colors.transparent;
+    } else if(page is VideoDetailPage){
+      color = Colors.black;
+    }
+  }
   //  沉浸式状态栏
   FlutterStatusbarManager.setColor(color, animated: false);
   FlutterStatusbarManager.setStyle(statusStyle == StatusStyle.DARK_CONTENT
@@ -69,18 +89,23 @@ borderLine(BuildContext context, {bottom: true, top: false}) {
 }
 
 ///提供间距
-SizedBox hiSpace({double height:1,double width:1}){
-return SizedBox(height: height,width: width,);
+SizedBox hiSpace({double height: 1, double width: 1}) {
+  return SizedBox(
+    height: height,
+    width: width,
+  );
 }
 
 ///底部阴影
-BoxDecoration bottomBoxShadow(){
-  return BoxDecoration(color: Colors.white,boxShadow: [
-BoxShadow(
-  color: Colors.grey[100],
-  offset: Offset(0, 5),//xy轴的便宜
-  blurRadius: 5, //模糊程度
-  spreadRadius: 1//阴影扩散程度
-)
+BoxDecoration bottomBoxShadow(BuildContext context) {
+  var themeProvider = context.watch<ThemeProvider>();
+  if (themeProvider.isDark()) return null;
+  return BoxDecoration(color: Colors.white, boxShadow: [
+    BoxShadow(
+        color: Colors.grey[100],
+        offset: Offset(0, 5), //xy轴的便宜
+        blurRadius: 5, //模糊程度
+        spreadRadius: 1 //阴影扩散程度
+    )
   ]);
 }

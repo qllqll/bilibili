@@ -57,6 +57,6 @@ class HiCache {
   }
 
   T get<T>(String key) {
-    return prefs.get(key);
+    return prefs?.get(key)??null;
   }
 }

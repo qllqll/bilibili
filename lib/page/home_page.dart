@@ -71,7 +71,7 @@ class _HomePageState extends HiState<HomePage>
       case AppLifecycleState.resumed:
         //fix Android 压后台，状态栏字体颜色变白的问题
       if(!(_currentPage is VideoDetailPage)){
-        changeStatusBar(color:Colors.white, statusStyle:StatusStyle.DARK_CONTENT);
+        changeStatusBar(color:Colors.white, statusStyle:StatusStyle.DARK_CONTENT,context: context);
       }
         break;
     //从后台到前台，界面可见
@@ -110,7 +110,7 @@ class _HomePageState extends HiState<HomePage>
               statusStyle: StatusStyle.DARK_CONTENT,
             ),
             Container(
-              decoration:bottomBoxShadow() ,
+              decoration:bottomBoxShadow(context) ,
               // color: Colors.white,
               child: _tabBar(),
             ),

@@ -10,6 +10,7 @@ import 'package:bilibili/http/dao/favorite_dao.dart';
 import 'package:bilibili/http/dao/video_detail_dao.dart';
 import 'package:bilibili/model/video_detail_model.dart';
 import 'package:bilibili/model/video_model.dart';
+import 'package:bilibili/provider/theme_provider.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:bilibili/util/view_util.dart';
 import 'package:bilibili/widget/app_bar.dart';
@@ -24,6 +25,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_overlay/flutter_overlay.dart';
+import 'package:provider/provider.dart';
 
 class VideoDetailPage extends StatefulWidget {
   final VideoModel videoModel;
@@ -66,6 +68,8 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = context.watch<ThemeProvider>();
+
     return Scaffold(
         body: MediaQuery.removePadding(
             removeTop: Platform.isIOS,

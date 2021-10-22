@@ -6,9 +6,12 @@ import 'package:bilibili/navigator/hi_navigator.dart';
 import 'package:bilibili/page/login_page.dart';
 import 'package:bilibili/page/registration_page.dart';
 import 'package:bilibili/page/video_detail_page.dart';
+import 'package:bilibili/provider/hi_provider.dart';
+import 'package:bilibili/provider/theme_provider.dart';
 import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'model/video_model.dart';
 
@@ -25,6 +28,7 @@ class _BiliAppState extends State<BiliApp> {
   BiliRouteDelegate _routeDelegate = BiliRouteDelegate();
   BiliRouteInformationParser _routeInformationParser =
       BiliRouteInformationParser();
+
   //定义router
 
   @override
@@ -46,10 +50,19 @@ class _BiliAppState extends State<BiliApp> {
                   ),
                 );
 
-          return MaterialApp(
-            home: widget,
-            theme: ThemeData(primarySwatch: white),
-          );
+          return MultiProvider(
+              providers: topProviders,
+              child: Consumer<ThemeProvider>(builder: (
+                BuildContext context,
+                ThemeProvider themeProvider,
+                Widget child) {
+                return MaterialApp(
+                  home: widget,
+                  theme: themeProvider.getTheme(),
+                  darkTheme: themeProvider.getTheme(isDarkMode: true),
+                  themeMode: themeProvider.getThemeMode(),
+                );
+              }));
         });
   }
 }
@@ -57,6 +70,7 @@ class _BiliAppState extends State<BiliApp> {
 class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
+
   BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     //  实现路由跳转逻辑
     HiNavigator.getInstance().registerRouteJump(
@@ -68,6 +82,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       notifyListeners();
     }));
   }
+
   RouteStatus _routeStatus = RouteStatus.home;
   List<MaterialPage> pages = [];
   VideoModel videoModel;
@@ -159,7 +174,9 @@ class BiliRouteInformationParser extends RouteInformationParser<BiliRoutePath> {
 ///定义路由数据  Path
 class BiliRoutePath {
   final String location;
+
   BiliRoutePath.home() : location = "/";
+
   BiliRoutePath.detail() : location = "/detail";
 }
 

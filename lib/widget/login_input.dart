@@ -98,7 +98,7 @@ class _LoginInputState extends State<LoginInput> {
               affinity: TextAffinity.downstream,
               offset: widget.text?.length??0)))),
       style: TextStyle(
-          fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300),
+          fontSize: 16, fontWeight: FontWeight.w300),
       //      输入框其他样式
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 20, right: 20),
