@@ -13,6 +13,8 @@ import 'package:bilibili/widget/loading_container.dart';
 import 'package:bilibili/widget/navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bilibili/provider/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int> onJumpTo;
@@ -55,6 +57,13 @@ class _HomePageState extends HiState<HomePage>
       }
     });
     loadDate();
+  }
+
+/// 监听系统Dark Mode 变化
+  @override
+  void didChangePlatformBrightness() {
+    context.read<ThemeProvider>().darkModeChange();
+    super.didChangePlatformBrightness();
   }
 
   //监听应用生命周期变化
