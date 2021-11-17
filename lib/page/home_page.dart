@@ -24,9 +24,11 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 //AutomaticKeepAliveClientMixin 保持页面状态，避免重复请求
 //TickerProviderStateMixin tabbar 动画
 //WidgetsBindingObserver APP生命周期
+
 class _HomePageState extends HiState<HomePage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin,WidgetsBindingObserver{
   var listener;
@@ -37,7 +39,7 @@ class _HomePageState extends HiState<HomePage>
   Widget _currentPage;
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     //注册生命周期
     WidgetsBinding.instance.addObserver(this);

@@ -3,12 +3,14 @@ import 'package:bilibili/http/dao/login_dao.dart';
 import 'package:bilibili/model/home_model.dart';
 import 'package:bilibili/navigator/bottom_navigator.dart';
 import 'package:bilibili/navigator/hi_navigator.dart';
+import 'package:bilibili/page/dark_mode_page.dart';
 import 'package:bilibili/page/login_page.dart';
 import 'package:bilibili/page/registration_page.dart';
 import 'package:bilibili/page/video_detail_page.dart';
 import 'package:bilibili/provider/hi_provider.dart';
 import 'package:bilibili/provider/theme_provider.dart';
 import 'package:bilibili/util/color.dart';
+import 'package:bilibili/util/hi_defend.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'model/video_model.dart';
 
 void main() {
-  runApp(BiliApp());
+  HiDefend().run(BiliApp());
 }
 
 class BiliApp extends StatefulWidget {
@@ -103,6 +105,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     if (routeStatus == RouteStatus.home) {
       pages.clear();
       page = pageWrap(BottomNavigator());
+    } else if(routeStatus == RouteStatus.darkMode){
+      page = pageWrap(DarkModePage());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel));
     } else if (routeStatus == RouteStatus.registration) {

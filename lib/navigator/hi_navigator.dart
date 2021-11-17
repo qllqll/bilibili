@@ -1,4 +1,5 @@
 import 'package:bilibili/navigator/bottom_navigator.dart';
+import 'package:bilibili/page/dark_mode_page.dart';
 import 'package:bilibili/page/login_page.dart';
 import 'package:bilibili/page/registration_page.dart';
 import 'package:bilibili/page/video_detail_page.dart';
@@ -23,7 +24,7 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus routeStatus) {
 }
 
 ///自定义路由封装，路由状态
-enum RouteStatus { login, registration, home, detail, unknown }
+enum RouteStatus { login, registration, home, detail, unknown,darkMode }
 
 ///获取page对应的RouteStatus
 RouteStatus getStatus(MaterialPage page) {
@@ -33,6 +34,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.registration;
   } else if (page.child is BottomNavigator) {
     return RouteStatus.home;
+  }else if(page.child is DarkModePage){
+    return RouteStatus.darkMode;
   } else if (page.child is VideoDetailPage) {
     return RouteStatus.detail;
   } else {

@@ -3,12 +3,15 @@ import 'package:bilibili/http/dao/profile_dao.dart';
 import 'package:bilibili/model/profile_model.dart';
 import 'package:bilibili/util/toast.dart';
 import 'package:bilibili/util/view_util.dart';
+import 'package:bilibili/widget/dark_mode_item.dart';
 import 'package:bilibili/widget/benefit_card.dart';
 import 'package:bilibili/widget/course_card.dart';
 import 'package:bilibili/widget/hi_banner.dart';
 import 'package:bilibili/widget/hi_blur.dart';
 import 'package:bilibili/widget/hi_flexible_header.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bilibili/provider/theme_provider.dart';
 
 ///我的
 class ProfilePage extends StatefulWidget {
@@ -109,7 +112,12 @@ class _ProfilePageState extends State<ProfilePage>
     if (_profileModel == null) {
       return [];
     }
-    return [_buildBanner(),CourseCard(courseList: _profileModel.courseList),BenefitCard(benefitList: _profileModel.benefitList)];
+    return [
+      _buildBanner(),
+      CourseCard(courseList: _profileModel.courseList),
+      BenefitCard(benefitList: _profileModel.benefitList),
+      DarkModeItem()
+    ];
   }
 
   _buildBanner() {
@@ -122,11 +130,13 @@ class _ProfilePageState extends State<ProfilePage>
 
   _buildProfileTab() {
     if (_profileModel == null) return Container();
-    return Container(
-      padding: EdgeInsets.only(top: 5,bottom: 5),
-      decoration: BoxDecoration(color: Colors.white),
-      child: Row(
+    var themeProvider = context.watch<ThemeProvider>();
 
+    return Container(
+      padding: EdgeInsets.only(top: 5, bottom: 5),
+      decoration: BoxDecoration(
+          color: themeProvider.isDark() ? Colors.black26 : Colors.white),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildIconText('收藏', _profileModel.favorite),
@@ -144,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage>
       children: [
         Text(
           '$count',
-          style: TextStyle(fontSize: 15, color: Colors.black),
+          style: TextStyle(fontSize: 15),
         ),
         Text(
           text,

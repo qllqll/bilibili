@@ -120,7 +120,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       child: Container(
           alignment: Alignment.center,
           height: 39,
-          color: Colors.white,
+          // color: Colors.white,
           padding: EdgeInsets.only(left: 20),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,7 +162,9 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         tabs.map<Tab>((name) {
           return Tab(text: name);
         }).toList(),
+
         controller: _controller);
+
   }
 
   _buildDetailList() {

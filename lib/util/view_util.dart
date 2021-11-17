@@ -46,13 +46,17 @@ void changeStatusBar({color: Colors.white, StatusStyle statusStyle: StatusStyle
       statusStyle = StatusStyle.LIGHT_CONTENT;
       color = HiColor.dark_bg;
     }
-    var page = HiNavigator.getInstance().getCurrent()?.page;
-    if(page is ProfilePage) {
-      color = Colors.transparent;
-    } else if(page is VideoDetailPage){
-      color = Colors.black;
-    }
   }
+
+  var page = HiNavigator.getInstance().getCurrent()?.page;
+  if(page is ProfilePage) {
+    color = Colors.transparent;
+  } else if(page is VideoDetailPage){
+    color = Colors.black;
+    statusStyle = StatusStyle.LIGHT_CONTENT;
+
+  }
+
   //  沉浸式状态栏
   FlutterStatusbarManager.setColor(color, animated: false);
   FlutterStatusbarManager.setStyle(statusStyle == StatusStyle.DARK_CONTENT

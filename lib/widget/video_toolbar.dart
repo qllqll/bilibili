@@ -4,8 +4,11 @@ import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/format_util.dart';
 import 'package:bilibili/util/view_util.dart';
 import 'package:flutter/material.dart';
+import 'package:bilibili/provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
-///视频点赞分享收藏等工具栏
+
+///视频点赞分享收藏等工具栏import 'package:provider/provider.dart';
 class VideoToolBar extends StatelessWidget {
   final VideoDetailModel detailModel;
   final VideoModel videoModel;
@@ -28,11 +31,12 @@ class VideoToolBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = context.watch<ThemeProvider>();
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 15),
       margin: EdgeInsets.only(bottom: 15),
       decoration:
-          BoxDecoration(color: Colors.white, border: borderLine(context)),
+          BoxDecoration(color:  themeProvider.isDark()?null:Colors.white, border: borderLine(context)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

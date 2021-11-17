@@ -2,6 +2,7 @@ import 'package:bilibili/db/hi_cache.dart';
 import 'package:bilibili/util/color.dart';
 import 'package:bilibili/util/hi_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 extension ThemeModeExtension on ThemeMode {
   String get value => <String>['System', 'Light', 'Dark'][index];
@@ -9,9 +10,24 @@ extension ThemeModeExtension on ThemeMode {
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode;
+  var _platformBrightness = SchedulerBinding.instance.window.platformBrightness;
+
+  //系统Dark Mode发生变化
+  void darkModeChange() {
+    if (_platformBrightness !=
+        SchedulerBinding.instance.window.platformBrightness) {
+      _platformBrightness = SchedulerBinding.instance.window.platformBrightness;
+      notifyListeners();
+    }
+  }
 
   ///判断是否是Dark Mode
-  bool isDark(){
+  bool isDark() {
+    if (_themeMode == ThemeMode.system) {
+      //获取系统的Dark  Mode
+      return SchedulerBinding.instance.window.platformBrightness ==
+          Brightness.dark;
+    }
     return _themeMode == ThemeMode.dark;
   }
 
@@ -28,7 +44,7 @@ class ThemeProvider extends ChangeNotifier {
         _themeMode = ThemeMode.light;
         break;
     }
-    return _themeMode = ThemeMode.dark;
+    return _themeMode ;
   }
 
   //设置主题
@@ -43,11 +59,10 @@ class ThemeProvider extends ChangeNotifier {
       errorColor: isDarkMode ? HiColor.dark_red : HiColor.red,
       primaryColor: isDarkMode ? HiColor.dark_bg : white,
       accentColor: isDarkMode ? primary[50] : white,
-    //  tab指示器的颜色
+      //  tab指示器的颜色
       indicatorColor: isDarkMode ? primary[50] : white,
-    //页面背景色
+      //页面背景色
       scaffoldBackgroundColor: isDarkMode ? HiColor.dark_bg : white,
-
     );
 
     return themeData;
