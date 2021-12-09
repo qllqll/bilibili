@@ -1,5 +1,7 @@
 import 'package:bilibili/http/request/base_request.dart';
 
+import 'hi_base_request.dart';
+
 class NoticeRequest extends BaseRequest {
   @override
   HttpMethod httpMethod() {

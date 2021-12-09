@@ -91,7 +91,6 @@ Color textColor =  themeProvider.isDark()?Colors.white70:Colors.black87;
   _infoText(Color textColor) {
     return Expanded(
         child: Container(
-      padding: EdgeInsets.only(top: 5, left: 8, bottom: 5, right: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,7 +5,7 @@ import 'package:bilibili/model/video_model.dart';
 import 'package:bilibili/widget/hi_banner.dart';
 import 'package:bilibili/widget/video_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_nested/flutter_nested.dart';
 
 class HomeTabPage extends StatefulWidget {
   final String categoryName;
@@ -34,27 +34,42 @@ class _HomeTabPageState
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
+  // @override
+  // // TODO: implement contentChild
+  // get contentChild => StaggeredGridView.countBuilder(
+  //     controller: scrollController,
+  //     physics: const AlwaysScrollableScrollPhysics(),
+  //     crossAxisCount: 2,
+  //     itemCount: dataList.length,
+  //     itemBuilder: (BuildContext context, int index) {
+  //       if (widget.bannerList != null && index == 0) {
+  //         return Padding(padding: EdgeInsets.only(bottom: 8), child: _banner());
+  //       } else {
+  //         return VideoCard(videoModel: dataList[index]);
+  //       }
+  //     },
+  //     staggeredTileBuilder: (int index) {
+  //       if (widget.bannerList != null && index == 0) {
+  //         return StaggeredTile.fit(2);
+  //       } else {
+  //         return StaggeredTile.fit(1);
+  //       }
+  //     });
+
   @override
-  // TODO: implement contentChild
-  get contentChild => StaggeredGridView.countBuilder(
-      controller: scrollController,
-      physics: const AlwaysScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      itemCount: dataList.length,
-      itemBuilder: (BuildContext context, int index) {
-        if (widget.bannerList != null && index == 0) {
-          return Padding(padding: EdgeInsets.only(bottom: 8), child: _banner());
-        } else {
-          return VideoCard(videoModel: dataList[index]);
-        }
-      },
-      staggeredTileBuilder: (int index) {
-        if (widget.bannerList != null && index == 0) {
-          return StaggeredTile.fit(2);
-        } else {
-          return StaggeredTile.fit(1);
-        }
-      });
+  get contentChild => HiNestedScrollView(
+          controller: scrollController,
+          itemCount: dataList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, childAspectRatio: 0.95),
+          itemBuilder: (BuildContext context, int index) {
+            return VideoCard(videoModel: dataList[index]);
+          },
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+          headers: [
+            if (widget.bannerList != null)
+              Padding(padding: EdgeInsets.only(bottom: 8), child: _banner())
+          ]);
 
   @override
   Future<HomeModel> getData(int pageIndex) async {

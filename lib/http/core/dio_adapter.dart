@@ -1,11 +1,11 @@
 import 'package:bilibili/http/core/hi_error.dart';
 import 'package:bilibili/http/core/hi_net_adapter.dart';
-import 'package:bilibili/http/request/base_request.dart';
+import 'package:bilibili/http/request/hi_base_request.dart';
 import 'package:dio/dio.dart';
 
 class DioAdapter extends HiNetAdapter {
   @override
-  Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
+  Future<HiNetResponse<T>> send<T>(HiBaseRequest request) async {
     var response, option = Options(headers: request.header);
     var error;
     try {
@@ -31,7 +31,7 @@ class DioAdapter extends HiNetAdapter {
   }
 
   ///构建HiNetResponse
-  HiNetResponse buildRes(Response response, BaseRequest request) {
+  HiNetResponse buildRes(Response response, HiBaseRequest request) {
     return HiNetResponse(
         data: response.data,
         request: request,
